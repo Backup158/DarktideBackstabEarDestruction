@@ -1,5 +1,19 @@
 local mod = get_mod("BackstabEarDestruction")
 
+local backstab_events = {"melee", "melee_elite", "ranged", }
+
+-- Creates options for each indicator replacer
+local audio_replacement_widgets = {}
+for _, event in pairs(backstab_events) do
+    backstab_events[#backstab_events + 1] = {
+        {
+            setting_id = "replace_indicator_"..event,
+            type = "checkbox",
+            default_value = true,
+        }
+    }
+end
+
 return {
     name = mod:localize("mod_name"),
     description = mod:localize("mod_description"),
@@ -16,23 +30,7 @@ return {
 				--type = "checkbox",
 				--default_value = true,
                 type = "group",
-                sub_widgets = {
-                    {
-                        setting_id = "replace_indicator_melee",
-                        type = "checkbox",
-                        default_value = true,
-                    },
-                    {
-                        setting_id = "replace_indicator_melee_elite",
-                        type = "checkbox",
-                        default_value = true,
-                    },
-                    {
-                        setting_id = "replace_indicator_ranged",
-                        type = "checkbox",
-                        default_value = true,
-                    },
-                }
+                sub_widgets = audio_replacement_widgets,
 			},
         }
 	}
