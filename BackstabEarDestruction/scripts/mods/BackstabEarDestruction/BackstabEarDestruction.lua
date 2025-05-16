@@ -18,6 +18,7 @@ local use_audio_plugin
 local replace_melee
 local replace_melee_elite
 local replace_ranged
+
 local replace_nonaudio_melee
 local replace_nonaudio_melee_choice
 local replace_nonaudio_melee_elite
@@ -55,7 +56,7 @@ local audio_files
 --end
 
 -- #############
--- Replace a Backstab Sound
+-- Replace a Backstab Sound (Nonaudio)
 -- #############
 -- Description: replaces the specified backstab sound with the given sound from the UI
 -- Given
@@ -65,11 +66,11 @@ local audio_files
 local function replace_this_backstab_sound(replacement_sound_key, original_backstab_event_id, debug)
     local replacement_wwise_event_string = UISoundEvents[replacement_sound_key]
     if debug then 
-        mod:echo("Replacement Sound is: "..replacement_sound_key)
-        mod:echo("Replacing (in minion_backstab_settings) "..original_backstab_event_id.." with: "..replacement_wwise_event_string) 
+        mod:echo("Replacing event: "..original_backstab_event_id.."\n\tFound in minion_backstab_settings\n\tOriginal value: "..MinionBackstabSettings[original_backstab_event_id])
+        mod:echo("\tReplacement Sound is: "..replacement_sound_key.."\n\t\twhich is: "..replacement_wwise_event_string) 
     end
     MinionBackstabSettings[original_backstab_event_id] = replacement_wwise_event_string
-    if debug then mod:echo("MinionBackstabSettings."..original_backstab_event_id.." <--- "..replacement_wwise_event_string) end
+    if debug then mod:echo("\tMinionBackstabSettings."..original_backstab_event_id.." <--- "..replacement_wwise_event_string) end
 end
 
 local function reset_sounds()
