@@ -38,55 +38,55 @@ return {
 				default_value = false,
                 sub_widgets = {
                     {
-                        setting_id = "nonaudio_melee",
+                        setting_id = "replace_nonaudio_melee",
                         type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
-                                setting_id = "nonaudio_melee_choice",
+                                setting_id = "replace_nonaudio_melee_choice",
                                 type = "dropdown",
-                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
+                                default_value = "havoc_terminal_rank_up_final_tier",
                                 options = {
-                                    {text = "melee_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
-                                    {text = "melee_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
-                                    {text = "melee_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
-                                    {text = "melee_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                    {text = "melee_option_havoc_final", value = "havoc_terminal_rank_up_final_tier"},
+                                    {text = "melee_option_crafting_upgrade", value = "crafting_view_on_upgrade_item"},
+                                    {text = "melee_option_crafting_sacrifice", value = "crafting_view_sacrifice_weapon"},
+                                    {text = "melee_option_crafting_extract", value = "crafting_view_on_extract_trait"},
                                 }
                             },
                         }
                     },
                     {
-                        setting_id = "nonaudio_melee_elite",
+                        setting_id = "replace_nonaudio_melee_elite",
                         type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
-                                setting_id = "nonaudio_melee_elite_choice",
+                                setting_id = "replace_nonaudio_melee_elite_choice",
                                 type = "dropdown",
-                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
+                                default_value = "havoc_terminal_rank_up_final_tier",
                                 options = {
-                                    {text = "melee_elite_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
-                                    {text = "melee_elite_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
-                                    {text = "melee_elite_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
-                                    {text = "melee_elite_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                    {text = "melee_elite_option_havoc_final", value = "havoc_terminal_rank_up_final_tier"},
+                                    {text = "melee_elite_option_crafting_upgrade", value = "crafting_view_on_upgrade_item"},
+                                    {text = "melee_elite_option_crafting_sacrifice", value = "crafting_view_sacrifice_weapon"},
+                                    {text = "melee_elite_option_crafting_extract", value = "crafting_view_on_extract_trait"},
                                 }
                             },
                         }
                     },
                     {
-                        setting_id = "nonaudio_ranged",
+                        setting_id = "replace_nonaudio_ranged",
                         type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
-                                setting_id = "nonaudio_ranged_choice",
+                                setting_id = "replace_nonaudio_ranged_choice",
                                 type = "dropdown",
-                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
+                                default_value = "havoc_terminal_rank_up_final_tier",
                                 options = {
-                                    {text = "ranged_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
-                                    {text = "ranged_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
-                                    {text = "ranged_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
-                                    {text = "ranged_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                    {text = "ranged_option_havoc_final", value = "havoc_terminal_rank_up_final_tier"},
+                                    {text = "ranged_option_crafting_upgrade", value = "crafting_view_on_upgrade_item"},
+                                    {text = "ranged_option_crafting_sacrifice", value = "crafting_view_sacrifice_weapon"},
+                                    {text = "ranged_option_crafting_extract", value = "crafting_view_on_extract_trait"},
                                 }
                             },
                         }

@@ -13,54 +13,74 @@ local UISoundEvents = require("scripts/settings/ui/ui_sound_events")
 -- Helper Functions
 --#################################
 local debug
-local useAudio
-local replaceMelee
-local replaceMeleeElite
-local replaceRanged
+local use_audio_plugin
 
+local replace_melee
+local replace_melee_elite
+local replace_ranged
 local replace_nonaudio_melee
 local replace_nonaudio_melee_choice
 local replace_nonaudio_melee_elite
 local replace_nonaudio_melee_elite_choice
 local replace_nonaudio_ranged
 local replace_nonaudio_ranged_choice
-local replacement_table_melee
-local replacement_table_melee_elite
-local replacement_table_ranged
+--local replacement_table_melee
+--local replacement_table_melee_elite
+--local replacement_table_ranged
 
 local Audio
 local audio_files
 
 -- #############
 -- Split String by Period
+-- #############
 -- Description: Splits the given string, using a period as a delimiter, then inserts each substring into the given table
 -- Given:
 --  string
 --  table
 --  bool
 -- Returns: the filled up table
-local function split_string_by_period(string_to_split, table_to_insert_into, debug)
-    -- Splits value into keys 
-    --  %. escapes the magic character (period)
-    --  [^%.] match anything that's not a period
-    --  [^%.]+ match the longest string of not periods
-    for v in string.gmatch(string_to_split, "[^%.]+") do 
-        table.insert(table_to_insert_into, v)
-        if debug then mod:echo("Split string result: "..tostring(v)) end
+-- NOTE: turns out there's only one level in these tables
+--local function split_string_by_period(string_to_split, debug)
+--    table_to_insert_into = {}
+--    -- Splits value into keys 
+--    --  %. escapes the magic character (period)
+--    --  [^%.] match anything that's not a period
+--    --  [^%.]+ match the longest string of not periods
+--    for v in string.gmatch(string_to_split, "[^%.]+") do 
+--        table.insert(table_to_insert_into, v)
+--        if debug then mod:echo("Split string result: "..tostring(v)) end
+--    end
+--    return table_to_insert_into
+--end
+
+-- #############
+-- Replace a Backstab Sound
+-- #############
+-- Description: replaces the specified backstab sound with the given sound from the UI
+-- Given
+--  string: value from ui sounds table
+--  string: key from backstab settings table
+--  bool: debug mode from mod options
+local function replace_this_backstab_sound(replacement_sound, original_backstab_event_id, debug)
+    local replacement_string = UISoundEvents[replacement_sound]
+    if debug then 
+        mod:echo("Replacement Sound is: "..replacement_sound)
+        mod:echo("Replacing minion_backstab_settings."..original_backstab_event_id.." with: "..tostring(replacement_string)) 
     end
-    return table_to_insert_into
+    MinionBackstabSettings.minion_backstab_settings[original_backstab_event_id] = replacement_string
 end
 
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
 -- "wwise/events/player/play_backstab_indicator_ranged"
-local function replaceTheSound()
+local function replace_sounds()
     debug = mod:get("enable_debug_mode")
-    useAudio = mod:get("use_audio")
+    use_audio_plugin = mod:get("use_audio")
 
     -- User is NOT using Audio plugin, so get option from dropdown
     -- Replace the sound then return
-    if not useAudio then
+    if not use_audio_plugin then
         replace_nonaudio_melee = mod:get("replace_nonaudio_melee")
         replace_nonaudio_melee_elite = mod:get("replace_nonaudio_melee_elite")
         replace_nonaudio_ranged = mod:get("replace_nonaudio_ranged")
@@ -68,44 +88,17 @@ local function replaceTheSound()
         -- Melee
         if replace_nonaudio_melee then
             replace_nonaudio_melee_choice = mod:get("replace_nonaudio_melee_choice")
-            replacement_table_melee = {}
-
-            replacement_table_melee = split_string_by_period(replace_nonaudio_melee_choice, replacement_table_melee, debug)
-
-            local replacement_string = UISoundEvents[replacement_table_melee[1]][replacement_table_melee[2]]
-            if debug then 
-                mod:echo("Replacement Sound is: "..replace_nonaudio_melee_choice)
-                mod:echo("Replacing minion_backstab_settings.melee_backstab_event with: "..tostring(replacement_string)) 
-            end
-            MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = replacement_string
+            replace_this_backstab_sound(replace_nonaudio_melee_choice, "melee_backstab_event", debug)
         end
         -- Melee Elite
         if replace_nonaudio_melee_elite then
             replace_nonaudio_melee_elite_choice = mod:get("replace_nonaudio_melee_elite_choice")
-            replacement_table_melee_elite = {}
-
-            replacement_table_melee_elite = split_string_by_period(replace_nonaudio_melee_elite_choice, replacement_table_melee_elite, debug)
-
-            local replacement_string = UISoundEvents[replacement_table_melee_elite[1]][replacement_table_melee_elite[2]]
-            if debug then 
-                mod:echo("Replacement Sound is: "..replace_nonaudio_melee_elite_choice)
-                mod:echo("Replacing minion_backstab_settings.melee_elite_backstab_event with: "..tostring(replacement_string)) 
-            end
-            MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = replacement_string
+            replace_this_backstab_sound(replace_nonaudio_melee_elite_choice, "melee_elite_backstab_event", debug)
         end
         -- Ranged
         if replace_nonaudio_ranged then
             replace_nonaudio_ranged_choice = mod:get("replace_nonaudio_ranged_choice")
-            replacement_table_ranged = {}
-
-            replacement_table_ranged = split_string_by_period(replace_nonaudio_ranged_choice, replacement_table_ranged, debug)
-
-            local replacement_string = UISoundEvents[replacement_table_ranged[1]][replacement_table_ranged[2]]
-            if debug then 
-                mod:echo("Replacement Sound is: "..replace_nonaudio_ranged_choice)
-                mod:echo("Replacing minion_backstab_settings.ranged_backstab_event with: "..tostring(replacement_string)) 
-            end
-            MinionBackstabSettings.minion_backstab_settings.ranged_backstab_event = replacement_string
+            replace_this_backstab_sound(replace_nonaudio_ranged_choice, "ranged_backstab_event", debug)
         end
 
         -- Important!
@@ -122,16 +115,16 @@ local function replaceTheSound()
     MinionBackstabSettings.minion_backstab_settings.ranged_backstab_event = "wwise/events/player/play_backstab_indicator_ranged"
 
     -- Replace sounds    
-    replaceMelee = mod:get("replace_indicator_melee")
-    replaceMeleeElite = mod:get("replace_indicator_melee_elite")
-    replaceRanged = mod:get("replace_indicator_ranged")
+    replace_melee = mod:get("replace_indicator_melee")
+    replace_melee_elite = mod:get("replace_indicator_melee_elite")
+    replace_ranged = mod:get("replace_indicator_ranged")
 
     if not Audio then
         mod:error("Audio plugin is required for this option!")
         return
     end
     audio_files = Audio.new_files_handler()
-    if replaceMelee then 
+    if replace_melee then 
         Audio.hook_sound("play_backstab_indicator_melee", function(sound_type, sound_name, delta)
             if delta == nil or delta > 0.1 then
                 Audio.play_file(audio_files:random("melee"), { audio_type = "sfx" })
@@ -139,7 +132,7 @@ local function replaceTheSound()
             return false
         end)
     end
-    if replaceMeleeElite then
+    if replace_melee_elite then
         Audio.hook_sound("play_backstab_indicator_melee_elite", function(sound_type, sound_name, delta)
             if delta == nil or delta > 0.1 then
                 Audio.play_file(audio_files:random("melee_elite"), { audio_type = "sfx" })
@@ -147,7 +140,7 @@ local function replaceTheSound()
             return false
         end)
     end
-    if replaceRanged then
+    if replace_ranged then
         Audio.hook_sound("play_backstab_indicator_ranged", function(sound_type, sound_name, delta)
             if delta == nil or delta > 0.1 then
                 Audio.play_file(audio_files:random("ranged"), { audio_type = "sfx" })
@@ -162,8 +155,8 @@ end
 --#################################
 mod.on_all_mods_loaded = function()
     mod:info("BackstabEarDestruction v" .. mod.version .. " loaded uwu nya :3")
-    replaceTheSound()
+    replace_sounds()
 end
 mod.on_setting_changed = function()
-    replaceTheSound()
+    replace_sounds()
 end
