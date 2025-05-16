@@ -8,7 +8,6 @@ return {
             mod_localization = "BackstabEarDestruction/scripts/mods/BackstabEarDestruction/BackstabEarDestruction_localization",
         })
     end,
-    packages = {},
     require = {
 		"DarktideLocalServer",
 		"Audio",
@@ -16,4 +15,5 @@ return {
     load_after = {
         "Audio",
     },
+    packages = {},
 }
