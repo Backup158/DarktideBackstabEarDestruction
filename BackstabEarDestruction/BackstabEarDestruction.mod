@@ -9,4 +9,11 @@ return {
         })
     end,
     packages = {},
+    require = {
+		"DarktideLocalServer",
+		"Audio",
+	},
+    load_after = {
+        "Audio",
+    },
 }
