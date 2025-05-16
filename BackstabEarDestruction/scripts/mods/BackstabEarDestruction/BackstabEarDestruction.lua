@@ -59,16 +59,22 @@ local audio_files
 -- #############
 -- Description: replaces the specified backstab sound with the given sound from the UI
 -- Given
---  string: value from ui sounds table
+--  string: key from ui sounds table
 --  string: key from backstab settings table
 --  bool: debug mode from mod options
 local function replace_this_backstab_sound(replacement_sound, original_backstab_event_id, debug)
-    local replacement_string = UISoundEvents[replacement_sound]
+    local replacement_wwise_event_string = UISoundEvents[replacement_sound]
     if debug then 
         mod:echo("Replacement Sound is: "..replacement_sound)
-        mod:echo("Replacing minion_backstab_settings."..original_backstab_event_id.." with: "..tostring(replacement_string)) 
+        mod:echo("Replacing (in minion_backstab_settings) "..original_backstab_event_id.." with: "..tostring(replacement_wwise_event_string)) 
     end
-    MinionBackstabSettings.minion_backstab_settings[original_backstab_event_id] = replacement_string
+    MinionBackstabSettings[original_backstab_event_id] = replacement_wwise_event_string
+end
+
+local function reset_sounds()
+    MinionBackstabSettings.melee_backstab_event = "wwise/events/player/play_backstab_indicator_melee"
+    MinionBackstabSettings.melee_elite_backstab_event = "wwise/events/player/play_backstab_indicator_melee_elite"
+    MinionBackstabSettings.ranged_backstab_event = "wwise/events/player/play_backstab_indicator_ranged"
 end
 
 -- "wwise/events/player/play_backstab_indicator_melee"
@@ -110,9 +116,7 @@ local function replace_sounds()
     Audio = get_mod("Audio")
 
     -- Reset to default
-    MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = "wwise/events/player/play_backstab_indicator_melee"
-    MinionBackstabSettings.minion_backstab_settings.melee_elite_backstab_event = "wwise/events/player/play_backstab_indicator_melee_elite"
-    MinionBackstabSettings.minion_backstab_settings.ranged_backstab_event = "wwise/events/player/play_backstab_indicator_ranged"
+    reset_sounds()
 
     -- Replace sounds    
     replace_melee = mod:get("replace_indicator_melee")
