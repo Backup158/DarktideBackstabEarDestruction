@@ -4,13 +4,11 @@ local backstab_events = {"melee", "melee_elite", "ranged", }
 
 -- Creates options for each indicator replacer
 local audio_replacement_widgets = {}
-for _, event in pairs(backstab_events) do
-    backstab_events[#backstab_events + 1] = {
-        {
-            setting_id = "replace_indicator_"..event,
-            type = "checkbox",
-            default_value = true,
-        }
+for _, event_name in pairs(backstab_events) do
+    audio_replacement_widgets[#audio_replacement_widgets + 1] = {
+        setting_id = "replace_indicator_"..event_name,
+        type = "checkbox",
+        default_value = true,
     }
 end
 
