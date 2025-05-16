@@ -15,11 +15,38 @@ local replaceMelee
 local replaceMeleeElite
 local replaceRanged
 
-local replacementSound
-local replacementTable
+local replace_nonaudio_melee
+local replace_nonaudio_melee_choice
+local replace_nonaudio_melee_elite
+local replace_nonaudio_melee_elite_choice
+local replace_nonaudio_ranged
+local replace_nonaudio_ranged_choice
+local replacement_table_melee
+local replacement_table_melee_elite
+local replacement_table_ranged
 
 local Audio
 local audio_files
+
+-- #############
+-- Split String by Period
+-- Description: Splits the given string, using a period as a delimiter, then inserts each substring into the given table
+-- Given:
+--  string
+--  table
+--  bool
+-- Returns: the filled up table
+local function split_string_by_period(string_to_split, table_to_insert_into, debug)
+    -- Splits value into keys 
+    --  %. escapes the magic character (period)
+    --  [^%.] match anything that's not a period
+    --  [^%.]+ match the longest string of not periods
+    for v in string.gmatch(string_to_split, "[^%.]+") do 
+        table.insert(table_to_insert_into, v)
+        if debug then mod:echo("Split string result: "..tostring(v)) end
+    end
+    return table_to_insert_into
+end
 
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
@@ -27,40 +54,44 @@ local audio_files
 local function replaceTheSound()
     debug = mod:get("enable_debug_mode")
     useAudio = mod:get("use_audio")
-    replaceMelee = mod:get("replace_indicator_melee")
-    replaceMeleeElite = mod:get("replace_indicator_melee_elite")
-    replaceRanged = mod:get("replace_indicator_ranged")
 
     -- User is NOT using Audio plugin, so get option from dropdown
     -- Replace the sound then return
     if not useAudio then
-        --replacementSound = mod:get("scan_sound")
-        ---- Default Case. Directly replace with the sound and gtfo
-        --if replacementSound == "sfx_scanning_sucess.events.scanner_equip" then
-        --    PlayerCharacterSoundEventAliases.sfx_scanning_sucess.events.scanner_equip = "wwise/events/player/play_scanner_collect_success"
-        --    return
-        --end
---
-        --replacementTable = {}
-        ---- Splits value into keys 
-        ----  %. escapes the magic character (period)
-        ----  [^%.] match anything that's not a period
-        ----  [^%.]+ match the longest string of not periods
-        --for v in string.gmatch(replacementSound, "[^%.]+") do 
-        --    table.insert(replacementTable, v)
-        --    if debug then mod:echo("Split string result: "..tostring(v)) end
-        --end
---
-        --if debug then 
-        --    mod:echo("Replacement Sound is: "..replacementSound)
-        --    mod:echo("Replacing sfx_scanning_sucess.events.scanner_equip with: "..PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]) 
-        --end
-        --PlayerCharacterSoundEventAliases.sfx_scanning_sucess.events.scanner_equip = PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]
+        replace_nonaudio_melee = mod:get("replace_nonaudio_melee")
+        
+        replace_nonaudio_melee_elite = mod:get("replace_nonaudio_melee_elite")
+        replace_nonaudio_melee_elite_choice = mod:get("replace_nonaudio_melee_elite_choice")
+        replace_nonaudio_ranged = mod:get("replace_nonaudio_ranged")
+        replace_nonaudio_ranged_choice = mod:get("replace_nonaudio_ranged_choice")
+
+        if replace_nonaudio_melee then
+            replace_nonaudio_melee_choice = mod:get("replace_nonaudio_melee_choice")
+            replacement_table_melee = {}
+
+            replacement_table_melee = split_string_by_period(replace_nonaudio_melee_choice, replacement_table_melee, debug)
+
+            if debug then 
+                mod:echo("Replacement Sound is: "..replace_nonaudio_melee_choice)
+                mod:echo("Replacing minion_backstab_settings.melee_backstab_event with: "..PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]) 
+            end
+        end
+
+        if debug then 
+            mod:echo("Replacement Sound is: "..replacementSound)
+            mod:echo("Replacing sfx_scanning_sucess.events.scanner_equip with: "..PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]) 
+        end
+        PlayerCharacterSoundEventAliases.sfx_scanning_sucess.events.scanner_equip = PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]
         mod:echo("not implemented yet")
         return
     end
     -- User is using Audio plugin
     Audio = get_mod("Audio")
+    
+    replaceMelee = mod:get("replace_indicator_melee")
+    replaceMeleeElite = mod:get("replace_indicator_melee_elite")
+    replaceRanged = mod:get("replace_indicator_ranged")
+
     if not Audio then
         mod:error("Audio plugin is required for this option!")
         return

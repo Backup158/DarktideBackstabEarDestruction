@@ -32,16 +32,65 @@ return {
                     },
                 }
 			},
-			{
-                setting_id = "scan_sound",
-				type = "dropdown",
-				default_value = "sfx_scanning_sucess.events.scanner_equip",
-        		options = {
-                    {text = "scan_option_default", value = "sfx_scanning_sucess.events.scanner_equip"},
-                    {text = "scan_option_ability_ogryn_taunt", value = "ability_shout.events.ogryn_taunt_shout"},
-                    {text = "scan_option_ability_vent", value = "ability_shout.events.psyker_shout"},
-                    {text = "scan_option_ability_voc", value = "ability_shout.events.veteran_combat_ability"},
-                    {text = "scan_option_ability_book", value = "ability_shout.events.zealot_relic"},
+            {
+				setting_id = "nonaudio_replacements",
+				type = "group",
+				default_value = false,
+                sub_widgets = {
+                    {
+                        setting_id = "nonaudio_melee",
+                        type = "dropdown",
+                        default_value = false,
+                        sub_widgets = {
+                            {
+                                setting_id = "nonaudio_melee_choice",
+                                type = "dropdown",
+                                default_value = false,
+                                options = {
+                                    {text = "melee_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
+                                    {text = "melee_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
+                                    {text = "melee_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
+                                    {text = "melee_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                }
+                            },
+                        }
+                    },
+                    {
+                        setting_id = "nonaudio_melee_elite",
+                        type = "dropdown",
+                        default_value = false,
+                        sub_widgets = {
+                            {
+                                setting_id = "nonaudio_melee_elite_choice",
+                                type = "dropdown",
+                                default_value = false,
+                                options = {
+                                    {text = "melee_elite_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
+                                    {text = "melee_elite_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
+                                    {text = "melee_elite_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
+                                    {text = "melee_elite_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                }
+                            },
+                        }
+                    },
+                    {
+                        setting_id = "nonaudio_ranged",
+                        type = "dropdown",
+                        default_value = false,
+                        sub_widgets = {
+                            {
+                                setting_id = "nonaudio_ranged_choice",
+                                type = "dropdown",
+                                default_value = false,
+                                options = {
+                                    {text = "ranged_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
+                                    {text = "ranged_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
+                                    {text = "ranged_option_crafting_sacrifice", value = "ui_sound_events.crafting_view_sacrifice_weapon"},
+                                    {text = "ranged_option_crafting_extract", value = "ui_sound_events.crafting_view_on_extract_trait"},
+                                }
+                            },
+                        }
+                    },
                 }
 			},
         }
