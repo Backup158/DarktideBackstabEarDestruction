@@ -1,10 +1,9 @@
 local mod = get_mod("BackstabEarDestruction")
 
 local backstab_options = {"melee", "melee_elite", "ranged",}
-local final_nonaudio_widgets = {}
 
---local widgets_location = final_data_table.options.widgets
---local nonaudio_subwidgets = widgets_location[#widgets_location].sub_widgets
+-- Fill up subwidgets for nonaudio replacement options
+local final_nonaudio_widgets = {}
 for _, backstab_event in pairs(backstab_options) do
     -- insert at the tail (index of size plus 1)
     final_nonaudio_widgets[#final_nonaudio_widgets + 1] = {
