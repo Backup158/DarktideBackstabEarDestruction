@@ -24,7 +24,7 @@ local audio_files
 -- GIVEN: 
 --  int
 -- RETURNS: N/A
-local function mod.sleep(seconds_to_wait)
+local function sleep(seconds_to_wait)
     local start_time = os.time()
     local current_time = os.time()
 
@@ -41,14 +41,13 @@ local function replace_sounds()
     debug = mod:get("enable_debug_mode")
 
     -- Check if game backend caught up yet
-    local backend_loaded = false
-    while(not backend_loaded) do
-        local start_time = os.time()
-
-        if Managers.backend._initialized then
-            backend_loaded = true
+    --while(true) do
+    --  The max I will wait is 20 seconds. If it takes longer than that, your game is cooked
+    for i = 1, 20 do
+        if Managers.backend._initialized then -- ty tickbox
+            break
         else
-            mod.sleep(5) -- wait 5 seconds
+            sleep(1)
         end
     end
 
