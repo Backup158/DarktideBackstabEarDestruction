@@ -1,13 +1,9 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.1"
+mod.version = "1.0.1"
 
 --#################################
 -- Requirements
 --#################################
--- scripts/settings/minion_backstab/minion_backstab_settings.lua
-local MinionBackstabSettings = require("scripts/settings/minion_backstab/minion_backstab_settings")
--- UI Sounds
-local UISoundEvents = require("scripts/settings/ui/ui_sound_events")
 
 --#################################
 -- Helper Functions
