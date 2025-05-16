@@ -3,6 +3,6 @@ return {
         en = "Backstab Ear Destruction",
     },
     mod_description = {
-        en = "MAKES BACKSTAB SOUNDS VERY LOUD",
+        en = "MAKES BACKSTAB SOUNDS VERY LOUD using the audio plugin",
     },
 }
