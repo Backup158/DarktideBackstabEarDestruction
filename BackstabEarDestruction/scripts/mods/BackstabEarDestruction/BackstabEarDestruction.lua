@@ -5,6 +5,9 @@ mod.version = "1.0"
 -- Requirements
 --#################################
 -- scripts/settings/minion_backstab/minion_backstab_settings.lua
+local MinionBackstabSettings = require("scripts/settings/minion_backstab/minion_backstab_settings")
+-- UI Sounds
+local UISoundEvents = require("scripts/settings/ui/ui_sound_events")
 
 --#################################
 -- Helper Functions
@@ -65,24 +68,22 @@ local function replaceTheSound()
         replace_nonaudio_ranged = mod:get("replace_nonaudio_ranged")
         replace_nonaudio_ranged_choice = mod:get("replace_nonaudio_ranged_choice")
 
+        -- Melee
         if replace_nonaudio_melee then
             replace_nonaudio_melee_choice = mod:get("replace_nonaudio_melee_choice")
             replacement_table_melee = {}
 
             replacement_table_melee = split_string_by_period(replace_nonaudio_melee_choice, replacement_table_melee, debug)
 
+            local replacement_string = UISoundEvents[replacement_table_melee[1]][replacement_table_melee[2]]
             if debug then 
                 mod:echo("Replacement Sound is: "..replace_nonaudio_melee_choice)
-                mod:echo("Replacing minion_backstab_settings.melee_backstab_event with: "..PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]) 
+                mod:echo("Replacing minion_backstab_settings.melee_backstab_event with: "..tostring(replacement_string)) 
             end
+            MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = replacement_string
         end
+        -- Melee Elite
 
-        if debug then 
-            mod:echo("Replacement Sound is: "..replacementSound)
-            mod:echo("Replacing sfx_scanning_sucess.events.scanner_equip with: "..PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]) 
-        end
-        PlayerCharacterSoundEventAliases.sfx_scanning_sucess.events.scanner_equip = PlayerCharacterSoundEventAliases[replacementTable[1]][replacementTable[2]][replacementTable[3]]
-        mod:echo("not implemented yet")
         return
     end
     -- User is using Audio plugin
