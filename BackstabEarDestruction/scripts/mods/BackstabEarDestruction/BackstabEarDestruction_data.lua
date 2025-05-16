@@ -9,6 +9,14 @@ for _, event_name in pairs(backstab_events) do
         setting_id = "replace_indicator_"..event_name,
         type = "checkbox",
         default_value = true,
+        sub_widgets = {
+            {
+                setting_id = "replacement_sound_volume"..event_name,
+                type = "numeric",
+                default_value = 40,
+                range = {0, 100},
+            },
+        }
     }
 end
 
