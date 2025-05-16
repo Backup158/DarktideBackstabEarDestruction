@@ -60,12 +60,12 @@ local function replace_sounds()
     -- Check if game backend caught up yet
     --while(true) do
     --  The max I will wait is 20 seconds. If it takes longer than that, your game is cooked
-    for i = 1, 20 do
+    for iterations = 1, 20 do
         if Managers.backend._initialized then -- ty tickbox
             break
-            if debug then mod:info("Backend initialized after ~"..tostring(i).." seconds")
+            if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
         else
-            if debug then mod:echo("sleepy time :3\t"..tostring(i)) end
+            if debug then mod:echo("sleepy time :3 "..tostring(iterations)) end
             sleep(1)
         end
     end
