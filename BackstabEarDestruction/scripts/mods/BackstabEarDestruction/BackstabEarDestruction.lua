@@ -1,5 +1,5 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.0"
+mod.version = "1.1"
 
 --#################################
 -- Requirements
@@ -62,11 +62,8 @@ local function replaceTheSound()
     -- Replace the sound then return
     if not useAudio then
         replace_nonaudio_melee = mod:get("replace_nonaudio_melee")
-        
         replace_nonaudio_melee_elite = mod:get("replace_nonaudio_melee_elite")
-        replace_nonaudio_melee_elite_choice = mod:get("replace_nonaudio_melee_elite_choice")
         replace_nonaudio_ranged = mod:get("replace_nonaudio_ranged")
-        replace_nonaudio_ranged_choice = mod:get("replace_nonaudio_ranged_choice")
 
         -- Melee
         if replace_nonaudio_melee then
@@ -83,9 +80,39 @@ local function replaceTheSound()
             MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = replacement_string
         end
         -- Melee Elite
+        if replace_nonaudio_melee_elite then
+            replace_nonaudio_melee_elite_choice = mod:get("replace_nonaudio_melee_elite_choice")
+            replacement_table_melee_elite = {}
 
+            replacement_table_melee_elite = split_string_by_period(replace_nonaudio_melee_elite_choice, replacement_table_melee_elite, debug)
+
+            local replacement_string = UISoundEvents[replacement_table_melee_elite[1]][replacement_table_melee_elite[2]]
+            if debug then 
+                mod:echo("Replacement Sound is: "..replace_nonaudio_melee_elite_choice)
+                mod:echo("Replacing minion_backstab_settings.melee_elite_backstab_event with: "..tostring(replacement_string)) 
+            end
+            MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = replacement_string
+        end
+        -- Ranged
+        if replace_nonaudio_ranged then
+            replace_nonaudio_ranged_choice = mod:get("replace_nonaudio_ranged_choice")
+            replacement_table_ranged = {}
+
+            replacement_table_ranged = split_string_by_period(replace_nonaudio_ranged_choice, replacement_table_ranged, debug)
+
+            local replacement_string = UISoundEvents[replacement_table_ranged[1]][replacement_table_ranged[2]]
+            if debug then 
+                mod:echo("Replacement Sound is: "..replace_nonaudio_ranged_choice)
+                mod:echo("Replacing minion_backstab_settings.ranged_backstab_event with: "..tostring(replacement_string)) 
+            end
+            MinionBackstabSettings.minion_backstab_settings.ranged_backstab_event = replacement_string
+        end
+
+        -- Important!
+        -- This return makes it so it won't move on and try to use the audio plugin, since this segment of code only executes when NOT using audio
         return
     end
+
     -- User is using Audio plugin
     Audio = get_mod("Audio")
     
