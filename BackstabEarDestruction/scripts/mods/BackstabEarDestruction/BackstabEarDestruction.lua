@@ -42,9 +42,11 @@ end
 --  string: the end part of the backstab event name
 local function audio_replace_backstab_sound(Audio, which_sound)
     Audio.hook_sound("play_backstab_indicator_"..which_sound, function(sound_type, sound_name, delta)
+        -- Delta debounce so only 10 can play per second
         if delta == nil or delta > 0.1 then
             Audio.play_file(audio_files:random(which_sound), { audio_type = "sfx" })
         end
+        -- Silence original
         return false
     end)
 end
@@ -61,7 +63,9 @@ local function replace_sounds()
     for i = 1, 20 do
         if Managers.backend._initialized then -- ty tickbox
             break
+            if debug then mod:info("Backend initialized after ~"..tostring(i).." seconds")
         else
+            if debug then mod:echo("sleepy time :3\t"..tostring(i)) end
             sleep(1)
         end
     end
