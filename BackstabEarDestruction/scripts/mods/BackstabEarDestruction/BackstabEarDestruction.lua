@@ -17,11 +17,40 @@ local replace_ranged
 local Audio
 local audio_files
 
+-- ######
+-- Sleep
+-- ######
+-- DESCRIPTION: Waits n seconds. In most systems (POSIX-compliant, Windows, some others), os.time is measured in seconds
+-- GIVEN: 
+--  int
+-- RETURNS: N/A
+local function mod.sleep(seconds_to_wait)
+    local start_time = os.time()
+    local current_time = os.time()
+
+    -- just keep checking current time until n seconds has passed
+    while (os.difftime(current_time, start_time) < seconds_to_wait) do
+        current_time = os.time()
+    end
+end
+
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
 -- "wwise/events/player/play_backstab_indicator_ranged"
 local function replace_sounds()
     debug = mod:get("enable_debug_mode")
+
+    -- Check if game backend caught up yet
+    local backend_loaded = false
+    while(not backend_loaded) do
+        local start_time = os.time()
+
+        if Managers.backend._initialized then
+            backend_loaded = true
+        else
+            mod.sleep(5) -- wait 5 seconds
+        end
+    end
 
     -- User is using Audio plugin
     Audio = get_mod("Audio")
