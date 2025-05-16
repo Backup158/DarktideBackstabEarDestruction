@@ -62,10 +62,10 @@ local audio_files
 --  string: key from ui sounds table
 --  string: key from backstab settings table
 --  bool: debug mode from mod options
-local function replace_this_backstab_sound(replacement_sound, original_backstab_event_id, debug)
-    local replacement_wwise_event_string = UISoundEvents[replacement_sound]
+local function replace_this_backstab_sound(replacement_sound_key, original_backstab_event_id, debug)
+    local replacement_wwise_event_string = UISoundEvents[replacement_sound_key]
     if debug then 
-        mod:echo("Replacement Sound is: "..replacement_sound)
+        mod:echo("Replacement Sound is: "..replacement_sound_key)
         mod:echo("Replacing (in minion_backstab_settings) "..original_backstab_event_id.." with: "..tostring(replacement_wwise_event_string)) 
     end
     MinionBackstabSettings[original_backstab_event_id] = replacement_wwise_event_string
