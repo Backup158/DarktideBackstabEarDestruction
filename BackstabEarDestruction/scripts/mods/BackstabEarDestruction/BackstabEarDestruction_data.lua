@@ -45,7 +45,7 @@ return {
                             {
                                 setting_id = "nonaudio_melee_choice",
                                 type = "dropdown",
-                                default_value = "melee_option_havoc_final",
+                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
                                 options = {
                                     {text = "melee_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
                                     {text = "melee_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
@@ -63,7 +63,7 @@ return {
                             {
                                 setting_id = "nonaudio_melee_elite_choice",
                                 type = "dropdown",
-                                default_value = "melee_elite_option_havoc_final",
+                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
                                 options = {
                                     {text = "melee_elite_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
                                     {text = "melee_elite_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
@@ -81,7 +81,7 @@ return {
                             {
                                 setting_id = "nonaudio_ranged_choice",
                                 type = "dropdown",
-                                default_value = "ranged_option_havoc_final",
+                                default_value = "ui_sound_events.havoc_terminal_rank_up_final_tier",
                                 options = {
                                     {text = "ranged_option_havoc_final", value = "ui_sound_events.havoc_terminal_rank_up_final_tier"},
                                     {text = "ranged_option_crafting_upgrade", value = "ui_sound_events.crafting_view_on_upgrade_item"},
