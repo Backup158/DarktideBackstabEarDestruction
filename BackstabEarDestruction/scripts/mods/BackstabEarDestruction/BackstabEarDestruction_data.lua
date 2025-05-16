@@ -39,7 +39,7 @@ return {
                 sub_widgets = {
                     {
                         setting_id = "nonaudio_melee",
-                        type = "dropdown",
+                        type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
@@ -57,7 +57,7 @@ return {
                     },
                     {
                         setting_id = "nonaudio_melee_elite",
-                        type = "dropdown",
+                        type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
@@ -75,7 +75,7 @@ return {
                     },
                     {
                         setting_id = "nonaudio_ranged",
-                        type = "dropdown",
+                        type = "checkbox",
                         default_value = false,
                         sub_widgets = {
                             {
