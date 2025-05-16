@@ -34,6 +34,21 @@ local function sleep(seconds_to_wait)
     end
 end
 
+-- ######
+-- Audio Hook sound
+-- ######
+-- Given:
+--  object: audio plugin
+--  string: the end part of the backstab event name
+local function audio_replace_backstab_sound(Audio, which_sound)
+    Audio.hook_sound("play_backstab_indicator_"..which_sound, function(sound_type, sound_name, delta)
+        if delta == nil or delta > 0.1 then
+            Audio.play_file(audio_files:random(which_sound), { audio_type = "sfx" })
+        end
+        return false
+    end)
+end
+
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
 -- "wwise/events/player/play_backstab_indicator_ranged"
@@ -65,28 +80,13 @@ local function replace_sounds()
     end
     audio_files = Audio.new_files_handler()
     if replace_melee then 
-        Audio.hook_sound("play_backstab_indicator_melee", function(sound_type, sound_name, delta)
-            if delta == nil or delta > 0.1 then
-                Audio.play_file(audio_files:random("melee"), { audio_type = "sfx" })
-            end
-            return false
-        end)
+        audio_replace_backstab_sound(Audio, "melee")
     end
     if replace_melee_elite then
-        Audio.hook_sound("play_backstab_indicator_melee_elite", function(sound_type, sound_name, delta)
-            if delta == nil or delta > 0.1 then
-                Audio.play_file(audio_files:random("melee_elite"), { audio_type = "sfx" })
-            end
-            return false
-        end)
+        audio_replace_backstab_sound(Audio, "melee_elite")
     end
     if replace_ranged then
-        Audio.hook_sound("play_backstab_indicator_ranged", function(sound_type, sound_name, delta)
-            if delta == nil or delta > 0.1 then
-                Audio.play_file(audio_files:random("ranged"), { audio_type = "sfx" })
-            end
-            return false
-        end)
+        audio_replace_backstab_sound(Audio, "ranged")
     end
 end
 
