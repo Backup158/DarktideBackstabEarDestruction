@@ -115,7 +115,13 @@ local function replaceTheSound()
 
     -- User is using Audio plugin
     Audio = get_mod("Audio")
-    
+
+    -- Reset to default
+    MinionBackstabSettings.minion_backstab_settings.melee_backstab_event = "wwise/events/player/play_backstab_indicator_melee"
+    MinionBackstabSettings.minion_backstab_settings.melee_elite_backstab_event = "wwise/events/player/play_backstab_indicator_melee_elite"
+    MinionBackstabSettings.minion_backstab_settings.ranged_backstab_event = "wwise/events/player/play_backstab_indicator_ranged"
+
+    -- Replace sounds    
     replaceMelee = mod:get("replace_indicator_melee")
     replaceMeleeElite = mod:get("replace_indicator_melee_elite")
     replaceRanged = mod:get("replace_indicator_ranged")
