@@ -13,8 +13,9 @@ for _, event_name in pairs(backstab_events) do
             {
                 setting_id = "replacement_sound_volume_"..event_name,
                 type = "numeric",
-                default_value = 40,
+                default_value = 100,
                 range = {0, 100},
+                unit_text = "%",
             },
         }
     }

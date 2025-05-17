@@ -13,9 +13,6 @@ local debug
 local replace_melee
 local replace_melee_elite
 local replace_ranged
-local volume_replace_melee
-local volume_replace_melee_elite
-local volume_replace_ranged
 
 local Audio
 local audio_files
@@ -45,11 +42,18 @@ end
 --  object: audio files handler for random
 --  string: the end part of the backstab event name
 --  int: volume for sound
-local function audio_replace_backstab_sound(Audio, audio_files, which_sound, volume_int)
-    Audio.hook_sound("play_backstab_indicator_"..which_sound, function(sound_type, sound_name, delta)
+local function audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
+    if debug then mod:echo("Replacing play_backstab_indicator_"..which_sound.." with ") end
+
+    given_audio_plugin.hook_sound("play_backstab_indicator_"..which_sound, function(sound_type, sound_name, delta)
         -- Delta debounce so only 10 can play per second
         if delta == nil or delta > 0.1 then
-            Audio.play_file(audio_files:random(which_sound), { audio_type = "sfx" })
+            given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
+                { 
+                    audio_type = "sfx", 
+                    volume = volume_int, 
+                }
+            )
         end
         -- Silence original
         return false
@@ -77,27 +81,28 @@ local function replace_sounds()
 
     -- User is using Audio plugin
     Audio = get_mod("Audio")
+    if not Audio then
+        mod:error("Audio plugin is required for this option!")
+        return
+    end
 
     -- Replace sounds    
     replace_melee = mod:get("replace_indicator_melee")
     replace_melee_elite = mod:get("replace_indicator_melee_elite")
     replace_ranged = mod:get("replace_indicator_ranged")
 
-    if not Audio then
-        mod:error("Audio plugin is required for this option!")
-        return
-    end
     audio_files = Audio.new_files_handler()
+
     if replace_melee then 
-        volume_replace_melee = mod:get("replace_sound_volume_melee")
+        local volume_replace_melee = mod:get("replace_sound_volume_melee")
         audio_replace_backstab_sound(Audio, audio_files, "melee", volume_replace_melee)
     end
     if replace_melee_elite then
-        volume_replace_melee_elite = mod:get("replace_sound_volume_melee_elite")
+        local volume_replace_melee_elite = mod:get("replace_sound_volume_melee_elite")
         audio_replace_backstab_sound(Audio, audio_files, "melee_elite", volume_replace_melee_elite)
     end
     if replace_ranged then
-        volume_replace_ranged = mod:get("replace_sound_volume_ranged")
+        local volume_replace_ranged = mod:get("replace_sound_volume_ranged")
         audio_replace_backstab_sound(Audio, audio_files, "ranged", volume_replace_ranged)
     end
 end
