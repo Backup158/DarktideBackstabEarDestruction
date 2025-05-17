@@ -37,7 +37,7 @@ local function add_localization_format(event_name, base_key, base_localization, 
 
 end
 
-for _, event_name in backstab_events do
+for _, event_name in pairs(backstab_events) do
     add_localization_format(event_name, "replace_indicator", "", true)
 end
 
