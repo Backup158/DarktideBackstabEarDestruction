@@ -43,9 +43,10 @@ end
 --  string: the end part of the backstab event name
 --  int: volume for sound
 local function audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
-    if debug then mod:echo("Replacing play_backstab_indicator_"..which_sound.." with ") end
+    local event_to_replace = "play_backstab_indicator_"..which_sound
+    if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
-    given_audio_plugin.hook_sound("play_backstab_indicator_"..which_sound, function(sound_type, sound_name, delta)
+    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
         -- Delta debounce so only 10 can play per second
         if delta == nil or delta > 0.1 then
             given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
