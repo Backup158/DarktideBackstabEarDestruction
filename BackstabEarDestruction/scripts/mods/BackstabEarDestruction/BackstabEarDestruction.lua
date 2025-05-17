@@ -72,10 +72,10 @@ local function replace_sounds()
     --  The max I will wait is 20 seconds. If it takes longer than that, your game is cooked
     for iterations = 1, 20 do
         if Managers.backend._initialized then -- ty tickbox
+            -- if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
             break
-            if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
         else
-            if debug then mod:echo("sleepy time :3 "..tostring(iterations)) end
+            -- if debug then mod:echo("sleepy time :3 "..tostring(iterations)) end
             sleep(1)
         end
     end
@@ -95,15 +95,15 @@ local function replace_sounds()
     audio_files = Audio.new_files_handler()
 
     if replace_melee then 
-        local volume_replace_melee = mod:get("replace_sound_volume_melee")
+        local volume_replace_melee = mod:get("replacement_sound_volume_melee")
         audio_replace_backstab_sound(Audio, audio_files, "melee", volume_replace_melee)
     end
     if replace_melee_elite then
-        local volume_replace_melee_elite = mod:get("replace_sound_volume_melee_elite")
+        local volume_replace_melee_elite = mod:get("replacement_sound_volume_melee_elite")
         audio_replace_backstab_sound(Audio, audio_files, "melee_elite", volume_replace_melee_elite)
     end
     if replace_ranged then
-        local volume_replace_ranged = mod:get("replace_sound_volume_ranged")
+        local volume_replace_ranged = mod:get("replacement_sound_volume_ranged")
         audio_replace_backstab_sound(Audio, audio_files, "ranged", volume_replace_ranged)
     end
 end
