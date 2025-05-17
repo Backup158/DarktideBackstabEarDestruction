@@ -3,13 +3,13 @@ local localizations = {
         en = "Backstab Ear Destruction",
     },
     mod_description = {
-        en = "REPLACES BACKSTAB SOUNDS WITH SOMETHING LOUD using the Audio plugin",
+        en = "REPLACES BACKSTAB SOUNDS FROM ENEMY ATTACKS WITH SOMETHING LOUD using the Audio plugin",
     },
     enable_debug_mode = {
         en = "Debug Mode",
     },
     enable_debug_mode_description = {
-        en = "Enables verbose logging (does nothing atm)",
+        en = "Enables verbose logging",
     },
     use_audio = {
         en = "Backstab Events to Replace",
