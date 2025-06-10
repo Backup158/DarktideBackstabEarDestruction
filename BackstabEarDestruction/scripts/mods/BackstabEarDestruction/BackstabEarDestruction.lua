@@ -1,5 +1,5 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.0.2"
+mod.version = "1.0.3"
 
 --#################################
 -- Requirements
