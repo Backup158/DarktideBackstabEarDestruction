@@ -77,11 +77,16 @@ local function replace_sounds()
     for iterations = 1, 10 do
         if Managers.backend._initialized then -- ty tickbox
             if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
+            mod.initialized = true
             break
         else
             if debug then mod:info("sleepy time :3 "..tostring(iterations)) end
             sleep(1)
         end
+    end
+    -- If backend hasn't caught up, leave so we can try again later
+    if not mod.initialized then
+        return
     end
 
     -- User is using Audio plugin
@@ -111,7 +116,6 @@ local function replace_sounds()
         audio_replace_backstab_sound(Audio, audio_files, "ranged", volume_replace_ranged)
     end
 
-    mod.initialized = true
 end
 
 --#################################
@@ -124,6 +128,7 @@ end
 mod.on_setting_changed = function()
     replace_sounds()
 end
+-- Replaces sound after loadscreens. By now, the backend should've caught up.
 local function mod.on_game_state_changed(status, state_name)
     if not mod.initialized then
         replace_sounds()
