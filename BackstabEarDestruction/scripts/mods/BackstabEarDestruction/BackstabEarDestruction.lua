@@ -129,7 +129,7 @@ mod.on_setting_changed = function()
     replace_sounds()
 end
 -- Replaces sound after loadscreens. By now, the backend should've caught up.
-local function mod.on_game_state_changed(status, state_name)
+function mod.on_game_state_changed(status, state_name)
     if not mod.initialized then
         replace_sounds()
     end
