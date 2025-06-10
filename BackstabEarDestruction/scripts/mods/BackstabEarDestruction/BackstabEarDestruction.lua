@@ -10,6 +10,8 @@ mod.version = "1.0.2"
 --#################################
 local debug
 
+mod.initialized = false
+
 local replace_melee
 local replace_melee_elite
 local replace_ranged
@@ -71,7 +73,6 @@ local function replace_sounds()
     debug = mod:get("enable_debug_mode")
 
     -- Check if game backend caught up yet
-    --while(true) do
     --  The max I will wait is 10 seconds. If it takes longer than that, your game is cooked
     for iterations = 1, 10 do
         if Managers.backend._initialized then -- ty tickbox
@@ -109,6 +110,8 @@ local function replace_sounds()
         local volume_replace_ranged = mod:get("replacement_sound_volume_ranged")
         audio_replace_backstab_sound(Audio, audio_files, "ranged", volume_replace_ranged)
     end
+
+    mod.initialized = true
 end
 
 --#################################
@@ -121,3 +124,9 @@ end
 mod.on_setting_changed = function()
     replace_sounds()
 end
+local function mod.on_game_state_changed(status, state_name)
+    if not mod.initialized then
+        replace_sounds()
+    end
+end
+mod.on_game_state_changed("exit", "StateMainMenu") -- Upon choosing character
