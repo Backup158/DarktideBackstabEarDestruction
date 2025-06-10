@@ -1,5 +1,5 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.0.3"
+mod.version = "1.0.3ns"
 
 --#################################
 -- Requirements
@@ -18,26 +18,6 @@ local replace_ranged
 
 local Audio
 local audio_files
-
--- ######
--- Sleep
--- ######
--- DESCRIPTION: Waits n seconds. In most systems (POSIX-compliant, Windows, some others), os.time is measured in seconds
--- GIVEN: 
---  int
--- RETURNS: N/A
-local function sleep(seconds_to_wait)
-    local start_time = os.time()
-    local current_time = os.time()
-
-    -- just keep checking current time until n seconds has passed
-    --  os.difftime (t2, t1)
-    --  returns t2-t1 in seconds
-    if debug then mod:info("Current time: "..tostring(current_time).." Start: "..tostring(start_time)) end
-    while (os.difftime(current_time, start_time) < seconds_to_wait) do
-        current_time = os.time()
-    end
-end
 
 -- ######
 -- Audio Hook sound
@@ -73,7 +53,7 @@ local function replace_sounds()
     debug = mod:get("enable_debug_mode")
 
     -- Check if game backend caught up yet
-    --  The max I will wait is 10 seconds. If it takes longer than that, your game is cooked
+    --  The max I will wait is 10 prints. That's probably not many milliseconds but it should avoid the deadlocks.
     for iterations = 1, 10 do
         if Managers.backend._initialized then -- ty tickbox
             if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
@@ -81,7 +61,7 @@ local function replace_sounds()
             break
         else
             if debug then mod:info("sleepy time :3 "..tostring(iterations)) end
-            sleep(1)
+            mod:info("tick tock")
         end
     end
     -- If backend hasn't caught up, leave so we can try again later
