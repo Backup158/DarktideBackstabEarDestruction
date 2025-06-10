@@ -29,6 +29,9 @@ local function sleep(seconds_to_wait)
     local current_time = os.time()
 
     -- just keep checking current time until n seconds has passed
+    --  os.difftime (t2, t1)
+    --  returns t2-t1 in seconds
+    if debug then mod:info("Current time: "..tostring(current_time).." Start: "..tostring(start_time)) end
     while (os.difftime(current_time, start_time) < seconds_to_wait) do
         current_time = os.time()
     end
@@ -69,13 +72,13 @@ local function replace_sounds()
 
     -- Check if game backend caught up yet
     --while(true) do
-    --  The max I will wait is 20 seconds. If it takes longer than that, your game is cooked
-    for iterations = 1, 20 do
+    --  The max I will wait is 10 seconds. If it takes longer than that, your game is cooked
+    for iterations = 1, 10 do
         if Managers.backend._initialized then -- ty tickbox
-            -- if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
+            if debug then mod:info("Backend initialized after ~"..tostring(iterations).." seconds") end
             break
         else
-            -- if debug then mod:echo("sleepy time :3 "..tostring(iterations)) end
+            if debug then mod:info("sleepy time :3 "..tostring(iterations)) end
             sleep(1)
         end
     end
