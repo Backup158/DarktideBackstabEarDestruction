@@ -1,6 +1,6 @@
 local mod = get_mod("BackstabEarDestruction")
 
-local backstab_events = {"melee", "melee_elite", "ranged", }
+local backstab_events = mod.backstab_events
 
 -- Creates options for each indicator replacer
 local audio_replacement_widgets = {}

@@ -1,3 +1,8 @@
+local mod = get_mod("BackstabEarDestruction")
+
+mod.backstab_events = {"melee", "melee_elite", "ranged", }
+local backstab_events = mod.backstab_events
+
 local localizations = {
     mod_name = {
         en = "Backstab Ear Destruction",
@@ -21,8 +26,6 @@ local localizations = {
         en = "Simple Audio or the Audio plugin are required for this option!",
     },
 }
-
-local backstab_events = {"melee", "melee_elite", "ranged", }
 
 local function add_localization_format(event_name, base_key, base_localization, will_append)
     local final_localization_val

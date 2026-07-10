@@ -9,6 +9,7 @@ mod.version = "1.1.0"
 -- Helper Functions
 --#################################
 local debug
+local backstab_events = mod.backstab_events
 
 mod.initialized = false
 
@@ -117,9 +118,8 @@ local function replace_sounds()
     end
 
     -- Replace sounds    
-    local sounds_to_replace = {"melee", "melee_elite", "ranged"}
-    for i = 1, #sounds_to_replace do
-        local sound = sounds_to_replace[i]
+    for i = 1, #backstab_events do
+        local sound = backstab_events[i]
         if mod:get("replace_indicator_"..sound) then
             replace_one_sound(sound)
         end
