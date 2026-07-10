@@ -45,7 +45,7 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
             given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
                 { 
                     audio_type = "sfx", 
-                    volume = volume_int, 
+                    volume = volume_int or 100, 
                 }
             )
         end
