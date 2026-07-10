@@ -58,7 +58,8 @@ end
 -- Simple Audio Hook sound
 -- ######
 local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
-    local event_to_replace = "play_backstab_indicator_"..which_sound
+    -- SA needs the $ at the end to terminate the regex. Otherwise it wildcard matchs for you
+    local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
     given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
