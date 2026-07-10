@@ -3,7 +3,7 @@ local localizations = {
         en = "Backstab Ear Destruction",
     },
     mod_description = {
-        en = "REPLACES BACKSTAB SOUNDS FROM ENEMY ATTACKS WITH SOMETHING LOUD using the Audio plugin",
+        en = "REPLACES BACKSTAB SOUNDS FROM ENEMY ATTACKS WITH SOMETHING LOUD using custom audio",
     },
     enable_debug_mode = {
         en = "Debug Mode",
