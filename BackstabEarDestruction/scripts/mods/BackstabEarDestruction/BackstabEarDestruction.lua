@@ -34,6 +34,11 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
     local event_to_replace = "play_backstab_indicator_"..which_sound
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
+    -- Audio maxes at 100%
+    if volume_int > 100 then
+        volume_int = 100
+    end
+
     given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
         -- Delta debounce so only 10 can play per second
         if delta == nil or delta > 0.1 then
