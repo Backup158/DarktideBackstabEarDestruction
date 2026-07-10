@@ -49,7 +49,8 @@ local function add_localization_format(event_name, base_key, base_localization, 
 
 end
 
-for _, event_name in pairs(backstab_events) do
+for i = 1, #backstab_events do
+    local event_name = backstab_events[i]
     add_localization_format(event_name, "replace_indicator_", "", true)
     add_localization_format(event_name, "replacement_sound_volume_", "Volume for ", true)
 end
