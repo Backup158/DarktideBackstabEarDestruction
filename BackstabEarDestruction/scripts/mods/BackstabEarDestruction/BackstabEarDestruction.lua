@@ -18,6 +18,8 @@ local replace_ranged
 
 local Audio
 local audio_files
+local simple_audio
+local simple_audio_random = {}
 
 -- ######
 -- Audio Hook sound
@@ -46,6 +48,37 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
     end)
 end
 
+-- ######
+-- Simple Audio Hook sound
+-- ######
+local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
+    local event_to_replace = "play_backstab_indicator_"..which_sound
+    if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
+
+    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+        -- Delta debounce so only 10 can play per second
+        if delta == nil or delta > 0.1 then
+            audio_files_manager:play({ 
+                audio_type = "sfx", 
+                volume = volume_int or 100, 
+            })
+        end
+        -- Silence original
+        return false
+    end)
+end
+
+local function replace_one_sound(which_sound) 
+    local volume_replace =  mod:get("replacement_sound_volume_"..which_sound)
+    if simple_audio then
+        simple_audio_replace_backstab_sound(simple_audio, simple_audio_random[which_sound], which_sound, volume_replace)
+    elseif Audio then
+        audio_replace_backstab_sound(Audio, audio_files, which_sound, volume_replace)
+    else
+        mod:info("how tf did you get here")
+    end
+end
+
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
 -- "wwise/events/player/play_backstab_indicator_ranged"
@@ -71,31 +104,26 @@ local function replace_sounds()
 
     -- User is using Audio plugin
     Audio = get_mod("Audio")
-    if not Audio then
-        mod:error("Audio plugin is required for this option!")
+    simple_audio = get_mod("SimpleAudio")
+    if simple_audio then
+        simple_audio_random.melee = simple_audio.glob("melee/*")
+        simple_audio_random.melee_elite = simple_audio.glob("melee_elite/*")
+        simple_audio_random.ranged = simple_audio.glob("ranged/*")
+    elseif Audio then
+        audio_files = Audio.new_files_handler()
+    else
+        mod:error(mod:localize("error_missing_audio_framework"))
         return
     end
 
     -- Replace sounds    
-    replace_melee = mod:get("replace_indicator_melee")
-    replace_melee_elite = mod:get("replace_indicator_melee_elite")
-    replace_ranged = mod:get("replace_indicator_ranged")
-
-    audio_files = Audio.new_files_handler()
-
-    if replace_melee then 
-        local volume_replace_melee = mod:get("replacement_sound_volume_melee")
-        audio_replace_backstab_sound(Audio, audio_files, "melee", volume_replace_melee)
+    local sounds_to_replace = {"melee", "melee_elite", "ranged"}
+    for i = 1, #sounds_to_replace do
+        local sound = sounds_to_replace[i]
+        if mod:get("replace_indicator_"..sound) then
+            replace_one_sound(sound)
+        end
     end
-    if replace_melee_elite then
-        local volume_replace_melee_elite = mod:get("replacement_sound_volume_melee_elite")
-        audio_replace_backstab_sound(Audio, audio_files, "melee_elite", volume_replace_melee_elite)
-    end
-    if replace_ranged then
-        local volume_replace_ranged = mod:get("replacement_sound_volume_ranged")
-        audio_replace_backstab_sound(Audio, audio_files, "ranged", volume_replace_ranged)
-    end
-
 end
 
 --#################################
@@ -105,10 +133,12 @@ mod.on_all_mods_loaded = function()
     mod:info("BackstabEarDestruction v" .. mod.version .. " loaded uwu nya :3")
     replace_sounds()
 end
+
 mod.on_setting_changed = function()
     replace_sounds()
 end
--- Replaces sound after loadscreens. By now, the backend should've caught up.
+
+-- Replaces sound on whatever state changes. By then, the backend should've caught up.
 function mod.on_game_state_changed(status, state_name)
     if not mod.initialized then
         replace_sounds()

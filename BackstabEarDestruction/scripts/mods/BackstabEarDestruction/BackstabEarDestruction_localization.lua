@@ -14,6 +14,12 @@ local localizations = {
     use_audio = {
         en = "Backstab Events to Replace",
     },
+    option_sound_volume = {
+        en = "Volume of the sound by percentage. Simple Audio supports 200% volume, but Audio only goes up to 100%; if you select a value over 100% when using Audio, the actual value will be 100%."
+    },
+    error_missing_audio_framework = {
+        en = "Simple Audio or the Audio plugin are required for this option!",
+    },
 }
 
 local backstab_events = {"melee", "melee_elite", "ranged", }
