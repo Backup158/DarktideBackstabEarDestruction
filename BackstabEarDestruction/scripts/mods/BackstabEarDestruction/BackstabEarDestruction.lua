@@ -1,5 +1,5 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.1.0"
+mod.version = "1.1.1"
 
 --#################################
 -- Requirements
@@ -86,6 +86,31 @@ local function replace_one_sound(which_sound)
     end
 end
 
+local function simple_audio_get_all_sounds_in_folder(string_folder_name)
+    -- return simple_audio.glob(string_folder_name.."/*.mp3)")
+
+    -- Gets OPUS. If not, get wav. If not, get m4a. If not, get mp3
+    -- return simple_audio.glob(string_folder_name.."/*.opus") or simple_audio.glob(string_folder_name.."/*.wav") or simple_audio.glob(string_folder_name.."/*.m4a") or simple_audio.glob(string_folder_name.."/*.mp3")
+    --[[
+    local glob_sounds
+    if pcall(simple_audio.glob(string_folder_name.."/*.opus")) then
+        glob_sounds = simple_audio.glob(string_folder_name.."/*.opus")
+    elseif pcall(simple_audio.glob(string_folder_name.."/*.wav")) then
+        glob_sounds = simple_audio.glob(string_folder_name.."/*.wav")
+    elseif pcall(simple_audio.glob(string_folder_name.."/*.m4a")) then
+        glob_sounds = simple_audio.glob(string_folder_name.."/*.m4a")
+    elseif pcall(simple_audio.glob(string_folder_name.."/*.mp3")) then
+        glob_sounds = simple_audio.glob(string_folder_name.."/*.mp3")
+    end
+    return glob_sounds
+    ]]
+    -- Matches any file that doesn't have "__" in the name. This is to avoid matching the Vortex file indicator.
+    --return simple_audio.glob(string_folder_name.."/[^%_%_]*")
+    -- Matches any file that ends in some audio thing
+    --  Didn't work without the $ at the end
+    return simple_audio.glob(string_folder_name.."/.*(opus|mp3|m4a|wav)$")
+end
+
 -- "wwise/events/player/play_backstab_indicator_melee"
 -- "wwise/events/player/play_backstab_indicator_melee_elite"
 -- "wwise/events/player/play_backstab_indicator_ranged"
@@ -113,9 +138,9 @@ local function replace_sounds()
     Audio = get_mod("Audio")
     simple_audio = get_mod("SimpleAudio")
     if simple_audio then
-        simple_audio_random.melee = simple_audio.glob("melee/*")
-        simple_audio_random.melee_elite = simple_audio.glob("melee_elite/*")
-        simple_audio_random.ranged = simple_audio.glob("ranged/*")
+        simple_audio_random.melee = simple_audio_get_all_sounds_in_folder("melee")
+        simple_audio_random.melee_elite = simple_audio_get_all_sounds_in_folder("melee_elite")
+        simple_audio_random.ranged = simple_audio_get_all_sounds_in_folder("ranged")
     elseif Audio then
         audio_files = Audio.new_files_handler()
     else

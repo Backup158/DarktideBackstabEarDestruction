@@ -1,0 +1,11 @@
+{
+  "name": "Incoming Backstab Ear Destruction",
+  "description": "Requires SimpleAudio or Audio. Replaces backstab warning sounds with loud sounds, for those who have trouble hearing it.",
+  "version": "1.1.1",
+  "author": "Backup158",
+  "homepage": "https://www.nexusmods.com/warhammer40kdarktide/mods/523",
+  "source": "https://github.com/Backup158/DarktideBackstabEarDestruction",
+  "dependencies": {
+    "self_after": ["Audio", "SimpleAudio"]
+  }
+}
