@@ -28,6 +28,6 @@ jobs:
           filename: IncomingBackstabEarDestruction.zip
           display_name: "Incoming Backstab Indicator Ear Destruction"
           description: "https://backup158.github.io/DarktideBackstabEarDestruction/CHANGELOG"
-          changelog: "https://backup158.github.io/DarktideBackstabEarDestruction/CHANGELOG"
+          # changelog: "https://backup158.github.io/DarktideBackstabEarDestruction/CHANGELOG"
           version: ${{ github.event.release.tag_name || github.event.inputs.version }}
           update_mod_version: true
