@@ -1,5 +1,4 @@
 local mod = get_mod("BackstabEarDestruction")
-mod.version = "1.1.2"
 
 --#################################
 -- Requirements
@@ -12,10 +11,6 @@ local debug
 local backstab_events = mod.backstab_events
 
 mod.initialized = false
-
-local replace_melee
-local replace_melee_elite
-local replace_ranged
 
 local Audio
 local audio_files
@@ -161,7 +156,6 @@ end
 -- Hooks and Execution
 --#################################
 mod.on_all_mods_loaded = function()
-    mod:info("BackstabEarDestruction v" .. mod.version .. " loaded uwu nya :3")
     replace_sounds()
 end
 
