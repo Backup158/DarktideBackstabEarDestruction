@@ -45,8 +45,6 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
         mod:info("how tf did you get here 2")
         return
     end
-     
-    if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
     local play_original_sound = false
     
@@ -59,6 +57,7 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
         volume_int = volume_int or 100
     end
 
+    if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
     given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
         -- Delta debounce so only 10 can play per second
         if delta == nil or delta > 0.1 then
