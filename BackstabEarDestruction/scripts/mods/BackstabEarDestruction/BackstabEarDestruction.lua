@@ -4,6 +4,9 @@ local mod = get_mod("BackstabEarDestruction")
 -- Requirements
 --#################################
 
+local string
+local string_regex_sub = string.gsub
+
 --#################################
 -- Helper Functions
 --#################################
@@ -50,7 +53,9 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
             return false
         end)
     else
-        given_audio_plugin.unhook_sound(event_to_replace)
+        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+            return true
+        end)
     end
     
 end
@@ -61,7 +66,7 @@ end
 local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
     -- SA needs the $ at the end to terminate the regex. Otherwise it wildcard matchs for you
     local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
-    if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
+    if debug then mod:echo("Sound: "..which_sound..". Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
     local toggling_sound_on = mod:get(which_sound)
     if toggling_sound_on then
@@ -77,7 +82,9 @@ local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_fil
             return false
         end)
     else
-        given_audio_plugin.unhook_sound(event_to_replace)
+        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+            return true
+        end)
     end
 end
 
@@ -171,7 +178,8 @@ mod.on_all_mods_loaded = function()
 end
 
 mod.on_setting_changed = function(setting_id)
-    replace_one_sound(setting_id)
+    local which_sound = string_regex_sub(setting_id, "replace_indicator_", "")
+    replace_one_sound(which_sound)
 end
 
 -- Replaces sound on whatever state changes. By then, the backend should've caught up.
