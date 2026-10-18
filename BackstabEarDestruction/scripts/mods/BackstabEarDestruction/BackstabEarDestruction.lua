@@ -21,15 +21,31 @@ local simple_audio
 local simple_audio_random = {}
 
 -- ######
--- Audio Hook sound
+-- Hook
 -- ######
 -- Given:
 --  object: audio plugin
 --  object: audio files handler for random
 --  string: the end part of the backstab event name
 --  int: volume for sound
-local function audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
-    local event_to_replace = "play_backstab_indicator_"..which_sound
+local function generic_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
+    local event_to_replace
+    
+    -- If using simple audio
+    if simple_audio then
+        -- SA needs the $ at the end to terminate the regex. Otherwise it wildcard matchs for you (ie melee matches melee and melee_elite)
+        event_to_replace = "play_backstab_indicator_"..which_sound.."$"
+    elseif Audio then
+        event_to_replace = "play_backstab_indicator_"..which_sound
+        -- Audio maxes at 100%
+        if volume_int > 100 then
+            volume_int = 100
+        end
+    else
+        mod:info("how tf did you get here 2")
+        return
+    end
+     
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
     local play_original_sound = false
@@ -39,11 +55,6 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
         -- Can't unhook, so rehook to replace with 0 volume
         volume_int = 0
         play_original_sound = true
-    else 
-        -- Audio maxes at 100%
-        if volume_int > 100 then
-            volume_int = 100
-        end
     end
 
     given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
@@ -62,42 +73,12 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
     
 end
 
--- ######
--- Simple Audio Hook sound
--- ######
-local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
-    -- SA needs the $ at the end to terminate the regex. Otherwise it wildcard matchs for you
-    local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
-    if debug then mod:echo("Sound: "..which_sound..". Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
-
-    local play_original_sound = false
-
-    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
-    if not toggling_sound_on then
-        -- Can't unhook, so rehook to replace with 0 volume
-        volume_int = 0
-        play_original_sound = true
-    end
-
-    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-        -- Delta debounce so only 10 can play per second
-        if delta == nil or delta > 0.1 then
-            audio_files_manager:play({ 
-                audio_type = "sfx", 
-                volume = volume_int or 100, 
-            })
-        end
-        -- Silence original
-        return play_original_sound
-    end)
-end
-
 local function replace_one_sound(which_sound) 
     local volume_replace =  mod:get("replacement_sound_volume_"..which_sound)
     if simple_audio then
-        simple_audio_replace_backstab_sound(simple_audio, simple_audio_random[which_sound], which_sound, volume_replace)
+        generic_replace_backstab_sound(simple_audio, simple_audio_random[which_sound], which_sound, volume_replace)
     elseif Audio then
-        audio_replace_backstab_sound(Audio, audio_files, which_sound, volume_replace)
+        generic_replace_backstab_sound(Audio, audio_files, which_sound, volume_replace)
     else
         mod:info("how tf did you get here")
     end
