@@ -4,7 +4,7 @@ local mod = get_mod("BackstabEarDestruction")
 -- Requirements
 --#################################
 
-local string
+local string = string
 local string_regex_sub = string.gsub
 
 --#################################
@@ -100,9 +100,12 @@ local function replace_one_sound(which_sound)
 end
 
 local function simple_audio_get_all_sounds_in_folder(string_folder_name)
-    -- return simple_audio.glob(string_folder_name.."/*.mp3)")
+    -- Only mp3
+    return simple_audio.glob(string_folder_name.."/*.mp3")
 
     -- Gets OPUS. If not, get wav. If not, get m4a. If not, get mp3
+    --      [X] Errors when it misses the first one, then doesn't check anything else
+    --      [X] pcall doesn't stop the error
     -- return simple_audio.glob(string_folder_name.."/*.opus") or simple_audio.glob(string_folder_name.."/*.wav") or simple_audio.glob(string_folder_name.."/*.m4a") or simple_audio.glob(string_folder_name.."/*.mp3")
     --[[
     local glob_sounds
@@ -118,10 +121,17 @@ local function simple_audio_get_all_sounds_in_folder(string_folder_name)
     return glob_sounds
     ]]
     -- Matches any file that doesn't have "__" in the name. This is to avoid matching the Vortex file indicator.
+    --      [X] This is written incorrectly. It just ignores anything with underscore
     --return simple_audio.glob(string_folder_name.."/[^%_%_]*")
-    -- Matches any file that ends in some audio thing
-    --  Didn't work without the $ at the end
-    return simple_audio.glob(string_folder_name.."/.*(opus|mp3|m4a|wav)$")
+    --      [?]This checks for
+    --          No underscores
+    --          One underscore with not underscore after
+    --        Ending in at least one alphanumeric
+    --return simple_audio.glob(string_folder_name.."/[^_]*([_][^_]+)%w+$")
+    --      [X] Matches any file that ends in some audio thing
+    --          Didn't work without the $ at the end
+    --          Actually just doesn't work at all because pipes are evil I guess
+    --return simple_audio.glob(string_folder_name.."/.*(opus|mp3|m4a|wav)$")
 end
 
 -- "wwise/events/player/play_backstab_indicator_melee"
@@ -179,6 +189,7 @@ end
 
 mod.on_setting_changed = function(setting_id)
     local which_sound = string_regex_sub(setting_id, "replace_indicator_", "")
+    which_sound = string_regex_sub(setting_id, "replacement_sound_volume_", "")
     replace_one_sound(which_sound)
 end
 
