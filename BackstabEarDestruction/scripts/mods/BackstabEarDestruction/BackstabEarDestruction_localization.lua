@@ -1,7 +1,13 @@
 local mod = get_mod("BackstabEarDestruction")
 
+-- Set data for the whole mod because I like having bad structure
 mod.backstab_events = {"melee", "melee_elite", "ranged", }
 local backstab_events = mod.backstab_events
+
+-- Data
+local string = string
+local string_regex_sub = string.gsub
+local string_upper = string.upper
 
 local localizations = {
     mod_name = {
@@ -33,13 +39,13 @@ local localizations = {
 local function add_localization_format(event_name, base_key, base_localization, will_append)
     local final_localization_val
     -- Replaces underscores with spaces
-    local event_name_formatted = string.gsub(event_name, "_", " ")
+    local event_name_formatted = string_regex_sub(event_name, "_", " ")
     -- Converts string value to sentence case
     --  \b is word boundary
     --  %l is lowercase letter
     --  ^ is start of string
-    event_name_formatted = string.gsub(event_name_formatted, "^%l", string.upper)
-    event_name_formatted = string.gsub(event_name_formatted, " %l", string.upper)
+    event_name_formatted = string_regex_sub(event_name_formatted, "^%l", string_upper)
+    event_name_formatted = string_regex_sub(event_name_formatted, " %l", string_upper)
     if will_append then 
         final_localization_val = base_localization..event_name_formatted
     else
