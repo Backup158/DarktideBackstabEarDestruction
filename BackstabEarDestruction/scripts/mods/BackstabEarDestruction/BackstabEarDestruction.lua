@@ -32,38 +32,33 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
     local event_to_replace = "play_backstab_indicator_"..which_sound
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
+    local play_original_sound = false
+    
     local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
-    if toggling_sound_on then
+    if not toggling_sound_on then
+        -- Can't unhook, so rehook to replace with 0 volume
+        volume_int = 0
+        play_original_sound = true
+    else 
         -- Audio maxes at 100%
         if volume_int > 100 then
             volume_int = 100
         end
-        
-        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-            -- Delta debounce so only 10 can play per second
-            if delta == nil or delta > 0.1 then
-                given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
-                    { 
-                        audio_type = "sfx", 
-                        volume = volume_int or 100, 
-                    }
-                )
-            end
-            -- Silence original
-            return false
-        end)
-    else
-        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-            -- Can't unhook, so rehook to replace with 0 volume
-            if delta == nil or delta > 0.1 then
-                audio_files_manager:play({ 
-                    audio_type = "sfx", 
-                    volume = 0, 
-                })
-            end
-            return true
-        end)
     end
+
+    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+        -- Delta debounce so only 10 can play per second
+        if delta == nil or delta > 0.1 then
+            given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
+                { 
+                    audio_type = "sfx", 
+                    volume = volume_int or 100, 
+                }
+            )
+        end
+        -- Silence original
+        return play_original_sound
+    end)
     
 end
 
@@ -75,31 +70,26 @@ local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_fil
     local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
     if debug then mod:echo("Sound: "..which_sound..". Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
+    local play_original_sound = false
+
     local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
-    if toggling_sound_on then
-        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-            -- Delta debounce so only 10 can play per second
-            if delta == nil or delta > 0.1 then
-                audio_files_manager:play({ 
-                    audio_type = "sfx", 
-                    volume = volume_int or 100, 
-                })
-            end
-            -- Silence original
-            return false
-        end)
-    else
-        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-            -- Can't unhook, so rehook to replace with 0 volume
-            if delta == nil or delta > 0.1 then
-                audio_files_manager:play({ 
-                    audio_type = "sfx", 
-                    volume = 0, 
-                })
-            end
-            return true
-        end)
+    if not toggling_sound_on then
+        -- Can't unhook, so rehook to replace with 0 volume
+        volume_int = 0
+        play_original_sound = true
     end
+
+    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+        -- Delta debounce so only 10 can play per second
+        if delta == nil or delta > 0.1 then
+            audio_files_manager:play({ 
+                audio_type = "sfx", 
+                volume = volume_int or 100, 
+            })
+        end
+        -- Silence original
+        return play_original_sound
+    end)
 end
 
 local function replace_one_sound(which_sound) 
