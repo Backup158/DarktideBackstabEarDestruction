@@ -30,8 +30,19 @@ local simple_audio_random = {}
 --  int: volume for sound
 local function generic_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
     local event_to_replace
+    local play_original_sound = false
     
-    -- If using simple audio
+    -- Overrides for if you're turning the sound off
+    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
+    if not toggling_sound_on then
+        -- Can't unhook, so rehook to replace with 0 volume
+        volume_int = 0
+        play_original_sound = true
+    else
+        volume_int = volume_int or 100
+    end
+
+    -- Overrides for which Audio framework you're using
     if simple_audio then
         -- SA needs the $ at the end to terminate the regex. Otherwise it wildcard matchs for you (ie melee matches melee and melee_elite)
         event_to_replace = "play_backstab_indicator_"..which_sound.."$"
@@ -44,17 +55,6 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
     else
         mod:info("how tf did you get here 2")
         return
-    end
-
-    local play_original_sound = false
-    
-    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
-    if not toggling_sound_on then
-        -- Can't unhook, so rehook to replace with 0 volume
-        volume_int = 0
-        play_original_sound = true
-    else
-        volume_int = volume_int or 100
     end
 
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
