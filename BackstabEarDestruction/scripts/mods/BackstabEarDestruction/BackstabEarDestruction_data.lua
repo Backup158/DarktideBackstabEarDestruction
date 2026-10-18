@@ -16,7 +16,7 @@ for _, event_name in pairs(backstab_events) do
                 tooltip = "option_sound_volume",
                 default_value = 100,
                 range = {0, 200},
-                unit_text = "%%",
+                unit_text = "unit_text_percent",
             },
         }
     }

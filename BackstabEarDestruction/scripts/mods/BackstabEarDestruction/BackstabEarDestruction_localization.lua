@@ -25,6 +25,9 @@ local localizations = {
     error_missing_audio_framework = {
         en = "Simple Audio or the Audio plugin are required for this option!",
     },
+    unit_text_percent = {
+        en = "%%",
+    },
 }
 
 local function add_localization_format(event_name, base_key, base_localization, will_append)
