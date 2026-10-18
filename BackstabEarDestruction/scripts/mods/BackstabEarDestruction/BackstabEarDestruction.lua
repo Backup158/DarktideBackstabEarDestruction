@@ -50,8 +50,6 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
     -- Overrides for if you're turning the sound off
     local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
     if not toggling_sound_on then
-        mod:notify("Warning: Disabling sounds ")
-
         -- Can't unhook, so rehook to replace with 0 volume
         volume_int = 0
         play_original_sound = true
@@ -182,6 +180,8 @@ end
 mod.on_setting_changed = function(setting_id)
     local which_sound = string_regex_sub(setting_id, "replace_indicator_", "")
     which_sound = string_regex_sub(setting_id, "replacement_sound_volume_", "")
+    
+    mod:notify("Warning: Changes to audio settings sometimes do not apply until game restart/reload. It's recommended to restart the game after changing this mod's settings")
     replace_one_sound(which_sound)
 end
 
