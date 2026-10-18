@@ -1,11 +1,14 @@
 # 1.1.2 - 2026-10-18
+Changing options mid-session still do not do anything
+
 ## Added
 - DMF Metadata file
+- Warning for changing mod options (until I can fix this)
 ## Changed
 - Refactored mod settings change to only change the one sound instead of trying to do anything. This should slightly improve performance.
 ## Fixed
 - Unlocalized units in mod options
-- Disabling options mid-session did not do anything
+- Some volume settings would always default to 100
 
 # 1.1.1 - 2026-08-17
 ## Fixed
