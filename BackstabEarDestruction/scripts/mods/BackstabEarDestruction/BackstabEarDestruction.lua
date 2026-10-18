@@ -37,7 +37,7 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
         volume_int = 100
     end
 
-    local toggling_sound_on = mod:get(which_sound)
+    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
     if toggling_sound_on then
         given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
             -- Delta debounce so only 10 can play per second
@@ -68,7 +68,7 @@ local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_fil
     local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
     if debug then mod:echo("Sound: "..which_sound..". Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
-    local toggling_sound_on = mod:get(which_sound)
+    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
     if toggling_sound_on then
         given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
             -- Delta debounce so only 10 can play per second
