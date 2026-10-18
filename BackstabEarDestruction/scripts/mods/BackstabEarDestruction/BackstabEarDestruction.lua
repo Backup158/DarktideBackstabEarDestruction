@@ -31,16 +31,6 @@ local simple_audio_random = {}
 local function generic_replace_backstab_sound(given_audio_plugin, audio_files_manager, which_sound, volume_int)
     local event_to_replace
     local play_original_sound = false
-    
-    -- Overrides for if you're turning the sound off
-    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
-    if not toggling_sound_on then
-        -- Can't unhook, so rehook to replace with 0 volume
-        volume_int = 0
-        play_original_sound = true
-    else
-        volume_int = volume_int or 100
-    end
 
     -- Overrides for which Audio framework you're using
     if simple_audio then
@@ -55,6 +45,22 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
     else
         mod:info("how tf did you get here 2")
         return
+    end
+
+    -- Overrides for if you're turning the sound off
+    local toggling_sound_on = mod:get("replace_indicator_"..which_sound)
+    if not toggling_sound_on then
+        mod:notify("Warning: Disabling sounds ")
+
+        -- Can't unhook, so rehook to replace with 0 volume
+        volume_int = 0
+        play_original_sound = true
+
+        if given_audio_plugin.is_sound_silenced(event_to_replace) then
+            given_audio_plugin.unsilence_sounds(event_to_replace)
+        end
+    else
+        volume_int = volume_int or 100
     end
 
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
