@@ -55,6 +55,8 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
         -- Can't unhook, so rehook to replace with 0 volume
         volume_int = 0
         play_original_sound = true
+    else
+        volume_int = volume_int or 100
     end
 
     given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
@@ -63,7 +65,7 @@ local function generic_replace_backstab_sound(given_audio_plugin, audio_files_ma
             given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
                 { 
                     audio_type = "sfx", 
-                    volume = volume_int or 100, 
+                    volume = volume_int, 
                 }
             )
         end
