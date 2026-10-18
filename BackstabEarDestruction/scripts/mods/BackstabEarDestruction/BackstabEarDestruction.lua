@@ -34,19 +34,25 @@ local function audio_replace_backstab_sound(given_audio_plugin, audio_files_mana
         volume_int = 100
     end
 
-    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-        -- Delta debounce so only 10 can play per second
-        if delta == nil or delta > 0.1 then
-            given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
-                { 
-                    audio_type = "sfx", 
-                    volume = volume_int or 100, 
-                }
-            )
-        end
-        -- Silence original
-        return false
-    end)
+    local toggling_sound_on = mod:get(which_sound)
+    if toggling_sound_on then
+        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+            -- Delta debounce so only 10 can play per second
+            if delta == nil or delta > 0.1 then
+                given_audio_plugin.play_file(audio_files_manager:random(which_sound), 
+                    { 
+                        audio_type = "sfx", 
+                        volume = volume_int or 100, 
+                    }
+                )
+            end
+            -- Silence original
+            return false
+        end)
+    else
+        given_audio_plugin.unhook_sound(event_to_replace)
+    end
+    
 end
 
 -- ######
@@ -57,17 +63,22 @@ local function simple_audio_replace_backstab_sound(given_audio_plugin, audio_fil
     local event_to_replace = "play_backstab_indicator_"..which_sound.."$"
     if debug then mod:echo("Replacing "..event_to_replace.." with volume "..tostring(volume_int)) end
 
-    given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
-        -- Delta debounce so only 10 can play per second
-        if delta == nil or delta > 0.1 then
-            audio_files_manager:play({ 
-                audio_type = "sfx", 
-                volume = volume_int or 100, 
-            })
-        end
-        -- Silence original
-        return false
-    end)
+    local toggling_sound_on = mod:get(which_sound)
+    if toggling_sound_on then
+        given_audio_plugin.hook_sound(event_to_replace, function(sound_type, sound_name, delta)
+            -- Delta debounce so only 10 can play per second
+            if delta == nil or delta > 0.1 then
+                audio_files_manager:play({ 
+                    audio_type = "sfx", 
+                    volume = volume_int or 100, 
+                })
+            end
+            -- Silence original
+            return false
+        end)
+    else
+        given_audio_plugin.unhook_sound(event_to_replace)
+    end
 end
 
 local function replace_one_sound(which_sound) 
@@ -159,8 +170,8 @@ mod.on_all_mods_loaded = function()
     replace_sounds()
 end
 
-mod.on_setting_changed = function()
-    replace_sounds()
+mod.on_setting_changed = function(setting_id)
+    replace_one_sound(setting_id)
 end
 
 -- Replaces sound on whatever state changes. By then, the backend should've caught up.
